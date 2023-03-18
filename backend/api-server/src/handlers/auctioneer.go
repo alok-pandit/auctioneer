@@ -4,9 +4,11 @@ import (
 	"auctioneer/src/db"
 	gen "auctioneer/src/db/generated"
 	"auctioneer/src/models"
+	"auctioneer/src/utils"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"github.com/segmentio/ksuid"
 )
 
 func Register(c echo.Context) error {
@@ -24,11 +26,26 @@ func Register(c echo.Context) error {
 
 	}
 
-	err := db.Sqlc.CreateAuctioneer(c.Request().Context(), gen.CreateAuctioneerParams{
-		ID:       "1",
+	id := ksuid.New()
+
+	hashedPassword, err := utils.HashPassword(newUser.Password)
+
+	if err != nil {
+
+		resp := models.Response{
+			Success: false,
+			Message: err.Error(),
+		}
+
+		return c.JSON(http.StatusInternalServerError, resp)
+
+	}
+
+	err = db.Sqlc.CreateAuctioneer(c.Request().Context(), gen.CreateAuctioneerParams{
+		ID:       id.String(),
 		FullName: newUser.FullName,
 		Username: newUser.Username,
-		Password: newUser.Password,
+		Password: hashedPassword,
 	})
 
 	if err != nil {
