@@ -1,0 +1,3 @@
+ALTER TABLE AUCTIONEER
+    ADD COLUMN auction_preferences JSON;
+
