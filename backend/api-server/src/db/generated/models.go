@@ -2,18 +2,16 @@
 // versions:
 //   sqlc v1.17.2
 
-package sqlcgen
+package generated
 
 import (
-	"database/sql"
-
-	"github.com/jackc/pgtype"
+	"github.com/tabbed/pqtype"
 )
 
 type Auctioneer struct {
-	ID                 string         `db:"id" json:"id"`
-	FullName           sql.NullString `db:"full_name" json:"fullName"`
-	Username           string         `db:"username" json:"username"`
-	Password           string         `db:"password" json:"password"`
-	AuctionPreferences pgtype.JSON    `db:"auction_preferences" json:"auctionPreferences"`
+	ID                 string                `db:"id" json:"id"`
+	FullName           string                `db:"full_name" json:"fullName"`
+	Username           string                `db:"username" json:"username"`
+	Password           string                `db:"password" json:"password"`
+	AuctionPreferences pqtype.NullRawMessage `db:"auction_preferences" json:"auctionPreferences"`
 }

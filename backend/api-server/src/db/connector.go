@@ -1,26 +1,29 @@
 package db
 
-import (
-	db "auctioneer/src/db/generated"
-	"context"
-	"fmt"
-	"os"
+// import (
+import db "auctioneer/src/db/generated"
 
-	"github.com/jackc/pgx/v4"
-)
+// 	"context"
+// 	"fmt"
+// 	"os"
+
+// 	_ "github.com/jackc/pgx/v4"
+// )
+
+// var Conn *pgx.Conn
 
 var Sqlc *db.Queries
 
-func Initialize() {
+// func Initialize() {
 
-	conn, err := pgx.Connect(context.Background(), os.Getenv("DB_MIGRATION_URL"))
+// 	fmt.Println(os.Getenv("DB_URL"))
 
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
-		os.Exit(1)
-	}
-	defer conn.Close(context.Background())
+// 	conn, err := pgx.Connect(context.Background(), os.Getenv("DB_URL"))
 
-	Sqlc = db.New(conn)
+// 	if err != nil {
+// 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+// 		os.Exit(1)
+// 	}
 
-}
+// 	Conn = conn
+// }

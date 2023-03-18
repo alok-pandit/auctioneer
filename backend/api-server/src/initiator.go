@@ -2,11 +2,16 @@ package initiator
 
 import (
 	"auctioneer/src/db"
+	"auctioneer/src/db/generated"
+	"auctioneer/src/handlers"
+	"database/sql"
+	"fmt"
 	"net/http"
 	"os"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	_ "github.com/lib/pq"
 )
 
 // Initiate inits the server and sets all the routes with appropriate handlers after initiating DB and optionally setting schemas
@@ -19,7 +24,16 @@ func Initiate() {
 		AllowOrigins: []string{"*"},
 	}))
 
-	db.Initialize()
+	fmt.Println("Before DB Init", os.Getenv("DB_URL"))
+	// db.Initialize()
+
+	d, err := sql.Open("postgres", "user=postgres password=readyset dbname=auctioneer sslmode=disable")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+		os.Exit(1)
+	}
+
+	db.Sqlc = generated.New(d)
 
 	e.Use(middleware.Logger())
 
@@ -29,7 +43,7 @@ func Initiate() {
 		return c.JSON(http.StatusOK, "Hello, World!")
 	})
 
-	// e.POST("/register", handlers.Register)
+	e.POST("/register", handlers.Register)
 
 	// e.PATCH("/register", handlers.UpdateRegistration)
 

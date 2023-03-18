@@ -3,11 +3,10 @@
 //   sqlc v1.17.2
 // source: auctioneer.sql
 
-package sqlcgen
+package generated
 
 import (
 	"context"
-	"database/sql"
 )
 
 const createAuctioneer = `-- name: CreateAuctioneer :exec
@@ -18,14 +17,14 @@ VALUES
 `
 
 type CreateAuctioneerParams struct {
-	ID       string         `db:"id" json:"id"`
-	FullName sql.NullString `db:"full_name" json:"fullName"`
-	Username string         `db:"username" json:"username"`
-	Password string         `db:"password" json:"password"`
+	ID       string `db:"id" json:"id"`
+	FullName string `db:"full_name" json:"fullName"`
+	Username string `db:"username" json:"username"`
+	Password string `db:"password" json:"password"`
 }
 
 func (q *Queries) CreateAuctioneer(ctx context.Context, arg CreateAuctioneerParams) error {
-	_, err := q.db.Exec(ctx, createAuctioneer,
+	_, err := q.db.ExecContext(ctx, createAuctioneer,
 		arg.ID,
 		arg.FullName,
 		arg.Username,
@@ -42,7 +41,7 @@ WHERE
 `
 
 func (q *Queries) DeleteAuctioneer(ctx context.Context, id string) error {
-	_, err := q.db.Exec(ctx, deleteAuctioneer, id)
+	_, err := q.db.ExecContext(ctx, deleteAuctioneer, id)
 	return err
 }
 
@@ -58,7 +57,7 @@ LIMIT
 `
 
 func (q *Queries) GetAuctioneer(ctx context.Context, id string) (Auctioneer, error) {
-	row := q.db.QueryRow(ctx, getAuctioneer, id)
+	row := q.db.QueryRowContext(ctx, getAuctioneer, id)
 	var i Auctioneer
 	err := row.Scan(
 		&i.ID,
@@ -80,7 +79,7 @@ ORDER BY
 `
 
 func (q *Queries) ListAuctioneers(ctx context.Context) ([]Auctioneer, error) {
-	rows, err := q.db.Query(ctx, listAuctioneers)
+	rows, err := q.db.QueryContext(ctx, listAuctioneers)
 	if err != nil {
 		return nil, err
 	}
@@ -98,6 +97,9 @@ func (q *Queries) ListAuctioneers(ctx context.Context) ([]Auctioneer, error) {
 			return nil, err
 		}
 		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err
