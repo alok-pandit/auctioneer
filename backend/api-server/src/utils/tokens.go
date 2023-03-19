@@ -9,8 +9,9 @@ import (
 )
 
 type JwtCustomClaims struct {
-	Username string `json:"username"`
-	ID       string `json:"id"`
+	Username string           `json:"username"`
+	ID       string           `json:"id"`
+	Roles    []generated.Role `json:"roles"`
 	jwt.RegisteredClaims
 }
 
@@ -19,6 +20,7 @@ func GetTokens(user generated.GetAuctioneerRow, username string) (string, string
 	claims := &JwtCustomClaims{
 		username,
 		user.ID,
+		user.Roles,
 		jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24)),
 		},
@@ -33,6 +35,7 @@ func GetTokens(user generated.GetAuctioneerRow, username string) (string, string
 	refreshClaims := &JwtCustomClaims{
 		username,
 		user.ID,
+		user.Roles,
 		jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24 * 365)),
 		},
