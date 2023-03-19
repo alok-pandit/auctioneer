@@ -4,11 +4,14 @@ import (
 	"auctioneer/src/db"
 	"auctioneer/src/db/generated"
 	"auctioneer/src/handlers"
+	"auctioneer/src/utils"
 	"database/sql"
 	"fmt"
 	"net/http"
 	"os"
 
+	"github.com/golang-jwt/jwt/v4"
+	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	_ "github.com/lib/pq"
@@ -50,13 +53,22 @@ func Initiate() {
 
 	e.POST("/login", handlers.Login)
 
-	// secure := e.Group("/secure")
+	secure := e.Group("/secure")
 
 	// secure.Use(middleware.JWT([]byte(os.Getenv("HASH_SECRET"))))
 
+	config := echojwt.Config{
+		NewClaimsFunc: func(c echo.Context) jwt.Claims {
+			return new(utils.JwtCustomClaims)
+		},
+		SigningKey: []byte(os.Getenv("HASH_SECRET")),
+	}
+
+	secure.Use(echojwt.WithConfig(config))
+
 	// secure.POST("/booking", handlers.AddBooking)
 
-	// secure.GET("/my-booking", handlers.GetMyBookings)
+	secure.GET("/renew-token", handlers.RenewToken)
 
 	// secure.POST("/slotsfordate", handlers.GetSlotCountForDate)
 

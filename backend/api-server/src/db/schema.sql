@@ -5,7 +5,7 @@ CREATE TABLE
     "username" varchar NOT NULL,
     "password" varchar NOT NULL,
     "auction_preferences" json,
-    "roles" _role NOT NULL DEFAULT '{user}':: role [],
+    "roles" role [] NOT NULL DEFAULT '{user}':: role [],
     PRIMARY KEY ("id")
   );
 

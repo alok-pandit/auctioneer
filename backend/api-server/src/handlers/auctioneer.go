@@ -6,10 +6,8 @@ import (
 	"auctioneer/src/models"
 	"auctioneer/src/utils"
 	"net/http"
-	"os"
-	"time"
 
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/segmentio/ksuid"
 )
@@ -132,30 +130,30 @@ func Login(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, resp)
 	}
 
-	token := jwt.New(jwt.SigningMethodHS256)
+	t, rt, err, errRefresh := utils.GetTokens(user, login.Username)
 
-	claims := token.Claims.(jwt.MapClaims)
-	claims["roles"] = user.Roles
-	claims["id"] = user.ID
-	claims["username"] = login.Username
-	claims["exp"] = time.Now().Add(time.Hour * 24 * 365).Unix()
-
-	t, err := token.SignedString([]byte(os.Getenv("HASH_SECRET")))
-
-	resp.Success = true
-
-	resp.Message = "User Logged In"
-
-	if err != nil {
+	if errRefresh != nil {
+		resp.Success = false
+		resp.Message = "JWT Creation Failed"
+	} else if err != nil {
 		resp.Success = false
 		resp.Message = "JWT Creation Failed"
 	} else {
+		resp.Success = true
+		resp.Message = "User Logged In"
 		m := make(map[string]string)
 		m["JWT"] = t
+		m["RefreshToken"] = rt
 		m["UserID"] = user.ID
 		resp.Data = m
 	}
 
 	return c.JSON(http.StatusOK, resp)
 
+}
+
+func RenewToken(c echo.Context) error {
+	user := c.Get("user").(*jwt.Token)
+	claims := user.Claims.(*utils.JwtCustomClaims)
+	return c.JSON(http.StatusOK, claims)
 }

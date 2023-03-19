@@ -7,6 +7,8 @@ package generated
 
 import (
 	"context"
+
+	"github.com/lib/pq"
 )
 
 const createAuctioneer = `-- name: CreateAuctioneer :exec
@@ -57,15 +59,15 @@ WHERE
 `
 
 type GetAuctioneerRow struct {
-	Password string      `db:"password" json:"password"`
-	ID       string      `db:"id" json:"id"`
-	Roles    interface{} `db:"roles" json:"roles"`
+	Password string `db:"password" json:"password"`
+	ID       string `db:"id" json:"id"`
+	Roles    []Role `db:"roles" json:"roles"`
 }
 
 func (q *Queries) GetAuctioneer(ctx context.Context, username string) (GetAuctioneerRow, error) {
 	row := q.db.QueryRowContext(ctx, getAuctioneer, username)
 	var i GetAuctioneerRow
-	err := row.Scan(&i.Password, &i.ID, &i.Roles)
+	err := row.Scan(&i.Password, &i.ID, pq.Array(&i.Roles))
 	return i, err
 }
 
@@ -93,7 +95,7 @@ func (q *Queries) ListAuctioneers(ctx context.Context) ([]Auctioneer, error) {
 			&i.Username,
 			&i.Password,
 			&i.AuctionPreferences,
-			&i.Roles,
+			pq.Array(&i.Roles),
 		); err != nil {
 			return nil, err
 		}
