@@ -1,12 +1,12 @@
 -- name: GetAuctioneer :one
 SELECT
-  *
+  password,
+  id,
+  roles
 FROM
   auctioneer
 WHERE
-  id = $1
-LIMIT
-  1;
+  username = $1;
 
 
 -- name: ListAuctioneers :many

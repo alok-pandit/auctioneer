@@ -28,3 +28,12 @@ func HashPassword(pwd string) (string, error) {
 
 	return string(hashedPassword), nil
 }
+
+func ComparePasswordHash(upwd string, dbpwd string) bool {
+	if err := bcrypt.CompareHashAndPassword([]byte(dbpwd), []byte(upwd)); err != nil {
+
+		return false
+
+	}
+	return true
+}

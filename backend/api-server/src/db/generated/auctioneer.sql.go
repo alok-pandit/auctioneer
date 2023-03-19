@@ -47,31 +47,31 @@ func (q *Queries) DeleteAuctioneer(ctx context.Context, id string) error {
 
 const getAuctioneer = `-- name: GetAuctioneer :one
 SELECT
-  id, full_name, username, password, auction_preferences
+  password,
+  id,
+  roles
 FROM
   auctioneer
 WHERE
-  id = $1
-LIMIT
-  1
+  username = $1
 `
 
-func (q *Queries) GetAuctioneer(ctx context.Context, id string) (Auctioneer, error) {
-	row := q.db.QueryRowContext(ctx, getAuctioneer, id)
-	var i Auctioneer
-	err := row.Scan(
-		&i.ID,
-		&i.FullName,
-		&i.Username,
-		&i.Password,
-		&i.AuctionPreferences,
-	)
+type GetAuctioneerRow struct {
+	Password string      `db:"password" json:"password"`
+	ID       string      `db:"id" json:"id"`
+	Roles    interface{} `db:"roles" json:"roles"`
+}
+
+func (q *Queries) GetAuctioneer(ctx context.Context, username string) (GetAuctioneerRow, error) {
+	row := q.db.QueryRowContext(ctx, getAuctioneer, username)
+	var i GetAuctioneerRow
+	err := row.Scan(&i.Password, &i.ID, &i.Roles)
 	return i, err
 }
 
 const listAuctioneers = `-- name: ListAuctioneers :many
 SELECT
-  id, full_name, username, password, auction_preferences
+  id, full_name, username, password, auction_preferences, roles
 FROM
   auctioneer
 ORDER BY
@@ -93,6 +93,7 @@ func (q *Queries) ListAuctioneers(ctx context.Context) ([]Auctioneer, error) {
 			&i.Username,
 			&i.Password,
 			&i.AuctionPreferences,
+			&i.Roles,
 		); err != nil {
 			return nil, err
 		}

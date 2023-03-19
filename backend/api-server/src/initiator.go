@@ -24,10 +24,11 @@ func Initiate() {
 		AllowOrigins: []string{"*"},
 	}))
 
-	fmt.Println("Before DB Init", os.Getenv("DB_URL"))
+	fmt.Println("Before DB Init", generated.AllRoleValues())
 	// db.Initialize()
 
 	d, err := sql.Open("postgres", "user=postgres password=readyset dbname=auctioneer sslmode=disable")
+
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)
@@ -47,7 +48,7 @@ func Initiate() {
 
 	// e.PATCH("/register", handlers.UpdateRegistration)
 
-	// e.POST("/login", handlers.Login)
+	e.POST("/login", handlers.Login)
 
 	// secure := e.Group("/secure")
 
