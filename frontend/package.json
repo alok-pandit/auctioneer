@@ -1,0 +1,40 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently 'next dev' 'yarn run prettier-watch' 'yarn run lint-watch'",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint-watch": "onchange 'src/**/*.{js,ts,jsx,tsx}' -- next lint --file {{changed}} --fix",
+    "prettier-watch": "onchange 'src/**/*.{js,ts,jsx,tsx}' -- prettier --write {{changed}}"
+  },
+  "dependencies": {
+    "next": "13.2.4",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-hook-form": "7.43.7",
+    "tailwindcss-radix": "2.8.0"
+  },
+  "devDependencies": {
+    "@types/node": "18.15.3",
+    "@types/react": "18.0.28",
+    "@types/react-dom": "18.0.11",
+    "autoprefixer": "10.4.14",
+    "clsx": "1.2.1",
+    "concurrently": "7.6.0",
+    "eslint": "8.36.0",
+    "eslint-config-next": "13.2.4",
+    "eslint-config-prettier": "8.7.0",
+    "eslint-plugin-prettier": "4.2.1",
+    "eslint-plugin-tailwindcss": "3.10.1",
+    "eslint-plugin-unused-imports": "2.0.0",
+    "onchange": "7.1.0",
+    "postcss": "8.4.21",
+    "prettier": "2.8.5",
+    "tailwindcss": "3.2.7",
+    "typescript": "5.0.2",
+    "windstitch": "0.3.0"
+  }
+}

@@ -74,6 +74,6 @@ func Initiate() {
 
 	// secure.GET("/get-city-by-country", handlers.GetCityByCountry)
 
-	e.Logger.Fatal(e.Start(":" + os.Getenv("PORT")))
+	e.Logger.Fatal(e.Start(":" + os.Getenv("API_SERVER_PORT")))
 
 }
