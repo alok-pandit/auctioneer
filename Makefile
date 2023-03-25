@@ -1,7 +1,7 @@
 include .envrc
 
 nodemon:
-	cd backend/api-server/  && go fmt && nodemon --watch './**/*.go' --signal SIGTERM --exec 'go' run main.go && cd ../..
+	cd backend/api-server/  && golangci-lint run src && nodemon --watch './**/*.go' --signal SIGTERM --exec 'go' run main.go && cd ../..
 
 nodemon-race:
 	cd backend/api-server/ && nodemon --watch './**/*.go' --signal SIGTERM --exec 'go' run -race main.go && cd ../..
@@ -42,3 +42,6 @@ sqlc-gen:
 
 fe:
 	cd frontend && yarn dev && cd ..
+
+lint:
+	golangci-lint run backend/api-server/src
