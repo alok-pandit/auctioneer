@@ -2,11 +2,11 @@ version: "2"
 sql:
   - engine: "postgresql"
     queries: "./src/db/queries"
-    schema: "./src/db/schema.sql"
+    schema: "./src/db/migrations"
     gen:
       go:
-        package: "generated"
-        out: "./src/db/generated"
+        package: "gen"
+        out: "./src/db/gen"
         sql_package: database/sql
         emit_db_tags: true
         emit_interface: true

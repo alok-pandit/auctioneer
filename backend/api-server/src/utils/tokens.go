@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"auctioneer/src/db/generated"
+	"auctioneer/src/db/gen"
 	"os"
 	"time"
 
@@ -10,13 +10,13 @@ import (
 )
 
 type JwtCustomClaims struct {
-	Username string           `json:"username"`
-	ID       string           `json:"id"`
-	Roles    []generated.Role `json:"roles"`
+	Username string     `json:"username"`
+	ID       string     `json:"id"`
+	Roles    []gen.Role `json:"roles"`
 	jwt.RegisteredClaims
 }
 
-func GetTokens(user generated.GetAuctioneerRow, username string) (string, string, error, error) {
+func GetTokens(user gen.GetAuctioneerRow, username string) (string, string, error, error) {
 
 	claims := &JwtCustomClaims{
 		username,

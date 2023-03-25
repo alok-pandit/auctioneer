@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"auctioneer/src/db"
-	gen "auctioneer/src/db/generated"
+	"auctioneer/src/db/gen"
 	"auctioneer/src/models"
 	"auctioneer/src/utils"
 	"net/http"

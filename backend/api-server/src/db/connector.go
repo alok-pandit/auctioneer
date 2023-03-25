@@ -1,7 +1,7 @@
 package db
 
 // import (
-import db "auctioneer/src/db/generated"
+import db "auctioneer/src/db/gen"
 
 // 	"context"
 // 	"fmt"

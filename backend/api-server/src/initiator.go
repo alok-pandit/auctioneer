@@ -2,7 +2,7 @@ package initiator
 
 import (
 	"auctioneer/src/db"
-	"auctioneer/src/db/generated"
+	"auctioneer/src/db/gen"
 	"auctioneer/src/handlers"
 	"auctioneer/src/utils"
 	"database/sql"
@@ -27,7 +27,7 @@ func Initiate() {
 		AllowOrigins: []string{"*"},
 	}))
 
-	fmt.Println("Before DB Init", generated.AllRoleValues())
+	fmt.Println("Before DB Init", gen.AllRoleValues())
 	// db.Initialize()
 
 	d, err := sql.Open("postgres", "user=postgres password=readyset dbname=auctioneer sslmode=disable")
@@ -37,7 +37,7 @@ func Initiate() {
 		os.Exit(1)
 	}
 
-	db.Sqlc = generated.New(d)
+	db.Sqlc = gen.New(d)
 
 	e.Use(middleware.Logger())
 
