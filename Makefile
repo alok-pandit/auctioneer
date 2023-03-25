@@ -22,7 +22,8 @@ deploy:
 	make build-container && sudo docker push alokpandit/auctioneer
 
 migration-create:
-	migrate create -ext sql -dir backend/api-server/src/db/migrations/ -seq ${name}
+	@read -p "Enter Migration Name (In Snake Case): " name; \
+	migrate create -ext sql -dir backend/api-server/src/db/migrations/ -seq $$name
 
 migration-up:
 	migrate -path backend/api-server/src/db/migrations/ -database ${DB_MIGRATION_URL} -verbose up
@@ -38,3 +39,6 @@ sqlc-compile:
 
 sqlc-gen:
 	cd backend/api-server/ && sqlc generate && cd ..
+
+fe:
+	cd frontend && yarn dev && cd ..

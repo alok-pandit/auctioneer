@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/labstack/echo/v4"
 )
 
 type JwtCustomClaims struct {
@@ -48,4 +49,9 @@ func GetTokens(user generated.GetAuctioneerRow, username string) (string, string
 	rt, errRefresh := token.SignedString([]byte(os.Getenv("HASH_SECRET")))
 
 	return t, rt, err, errRefresh
+}
+
+func GetClaims(c echo.Context) *JwtCustomClaims {
+	user := c.Get("user").(*jwt.Token)
+	return user.Claims.(*JwtCustomClaims)
 }

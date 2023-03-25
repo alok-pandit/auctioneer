@@ -58,31 +58,7 @@ const LoginForm = () => {
         placeholder="Password"
         type={'password'}
       /> */}
-      <div className="absolute-center">
-        <svg className="circle-svg" viewBox="0 0 500 500">
-          <defs>
-            <path
-              d="M50,250c0-110.5,89.5-200,200-200s200,89.5,200,200s-89.5,200-200,200S50,360.5,50,250"
-              id="textcircle_top"
-            >
-              <animateTransform
-                attributeName="transform"
-                begin="0s"
-                dur="20s"
-                type="rotate"
-                from="0 250 250"
-                to="360 250 250"
-                repeatCount="indefinite"
-              />
-            </path>
-          </defs>
-          <text className="circle-text" dy="70" textLength="1220">
-            <textPath xlinkHref="#textcircle_top">
-              View Our Showreels View Our Showreels
-            </textPath>
-          </text>
-        </svg>
-      </div>
+
       <button className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gray-800 px-10 py-4 font-mono font-medium tracking-tighter text-white ">
         <span className="absolute h-0 w-0 rounded-full bg-gray-900 transition-all duration-500 ease-out group-hover:h-56 group-hover:w-56"></span>
         <span className="absolute inset-0 -mt-1 h-full w-full rounded-lg bg-gradient-to-b from-transparent via-transparent to-gray-400 opacity-30"></span>

@@ -7,7 +7,6 @@ import (
 	"auctioneer/src/utils"
 	"net/http"
 
-	"github.com/golang-jwt/jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/segmentio/ksuid"
 )
@@ -153,7 +152,6 @@ func Login(c echo.Context) error {
 }
 
 func RenewToken(c echo.Context) error {
-	user := c.Get("user").(*jwt.Token)
-	claims := user.Claims.(*utils.JwtCustomClaims)
+	claims := utils.GetClaims(c)
 	return c.JSON(http.StatusOK, claims)
 }
