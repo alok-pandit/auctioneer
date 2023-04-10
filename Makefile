@@ -1,7 +1,7 @@
 include .envrc
 
 nodemon:
-	cd backend/api-server/  && golangci-lint run src && nodemon --watch './**/*.go' --signal SIGTERM --exec 'go' run main.go && cd ../..
+	cd backend/api-server/  && go vet && golangci-lint run src && nodemon --watch './**/*.go' --signal SIGTERM --exec 'go' run main.go && cd ../..
 
 nodemon-race:
 	cd backend/api-server/ && nodemon --watch './**/*.go' --signal SIGTERM --exec 'go' run -race main.go && cd ../..

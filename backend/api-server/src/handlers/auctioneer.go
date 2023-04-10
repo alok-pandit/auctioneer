@@ -6,6 +6,7 @@ import (
 	"auctioneer/src/models"
 	"auctioneer/src/utils"
 	"net/http"
+	"time"
 
 	"github.com/labstack/echo/v4"
 	"github.com/segmentio/ksuid"
@@ -141,8 +142,22 @@ func Login(c echo.Context) error {
 		resp.Success = true
 		resp.Message = "User Logged In"
 		m := make(map[string]string)
-		m["JWT"] = t
-		m["RefreshToken"] = rt
+
+		// Set tokens on Cookies
+		tokenCookie := new(http.Cookie)
+		tokenCookie.Name = "access-token"
+		tokenCookie.Value = t
+		tokenCookie.HttpOnly = true
+		tokenCookie.Expires = time.Now().Add(time.Hour * 24)
+		c.SetCookie(tokenCookie)
+
+		refreshTokenCookie := new(http.Cookie)
+		refreshTokenCookie.Name = "refresh-token"
+		refreshTokenCookie.Value = rt
+		refreshTokenCookie.HttpOnly = true
+		refreshTokenCookie.Expires = time.Now().Add(time.Hour * 24 * 365)
+		c.SetCookie(refreshTokenCookie)
+
 		m["UserID"] = user.ID
 		resp.Data = m
 	}

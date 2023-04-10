@@ -27,9 +27,6 @@ func Initiate() {
 		AllowOrigins: []string{"*"},
 	}))
 
-	fmt.Println("Before DB Init", gen.AllRoleValues())
-	// db.Initialize()
-
 	d, err := sql.Open("postgres", "user=postgres password=readyset dbname=auctioneer sslmode=disable")
 
 	if err != nil {
@@ -49,30 +46,21 @@ func Initiate() {
 
 	e.POST("/register", handlers.Register)
 
-	// e.PATCH("/register", handlers.UpdateRegistration)
-
 	e.POST("/login", handlers.Login)
 
 	secure := e.Group("/secure")
-
-	// secure.Use(middleware.JWT([]byte(os.Getenv("HASH_SECRET"))))
 
 	config := echojwt.Config{
 		NewClaimsFunc: func(c echo.Context) jwt.Claims {
 			return new(utils.JwtCustomClaims)
 		},
-		SigningKey: []byte(os.Getenv("HASH_SECRET")),
+		TokenLookup: "cookie:access-token",
+		SigningKey:  []byte(os.Getenv("HASH_SECRET")),
 	}
 
 	secure.Use(echojwt.WithConfig(config))
 
-	// secure.POST("/booking", handlers.AddBooking)
-
 	secure.GET("/renew-token", handlers.RenewToken)
-
-	// secure.POST("/slotsfordate", handlers.GetSlotCountForDate)
-
-	// secure.GET("/get-city-by-country", handlers.GetCityByCountry)
 
 	e.Logger.Fatal(e.Start(":" + os.Getenv("API_SERVER_PORT")))
 
