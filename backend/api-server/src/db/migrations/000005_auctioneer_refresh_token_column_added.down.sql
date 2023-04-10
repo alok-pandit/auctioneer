@@ -1,0 +1,2 @@
+ALTER TABLE
+  AUCTIONEER DROP COLUMN refresh_token;

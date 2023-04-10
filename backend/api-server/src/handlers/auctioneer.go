@@ -5,7 +5,9 @@ import (
 	"auctioneer/src/db/gen"
 	"auctioneer/src/models"
 	"auctioneer/src/utils"
+	"database/sql"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/labstack/echo/v4"
@@ -139,27 +141,40 @@ func Login(c echo.Context) error {
 		resp.Success = false
 		resp.Message = "JWT Creation Failed"
 	} else {
-		resp.Success = true
-		resp.Message = "User Logged In"
-		m := make(map[string]string)
+		// Save refresh Token to DB
+		encToken, err := utils.Encrypt(rt, os.Getenv("ENCRYPTION_KEY"))
 
-		// Set tokens on Cookies
-		tokenCookie := new(http.Cookie)
-		tokenCookie.Name = "access-token"
-		tokenCookie.Value = t
-		tokenCookie.HttpOnly = true
-		tokenCookie.Expires = time.Now().Add(time.Hour * 24)
-		c.SetCookie(tokenCookie)
+		if err != nil {
+			resp.Success = false
+			resp.Message = err.Error()
+		} else {
 
-		refreshTokenCookie := new(http.Cookie)
-		refreshTokenCookie.Name = "refresh-token"
-		refreshTokenCookie.Value = rt
-		refreshTokenCookie.HttpOnly = true
-		refreshTokenCookie.Expires = time.Now().Add(time.Hour * 24 * 365)
-		c.SetCookie(refreshTokenCookie)
+			db.Sqlc.SaveRefreshTokenToDB(c.Request().Context(), gen.SaveRefreshTokenToDBParams{
+				ID:           user.ID,
+				RefreshToken: sql.NullString{String: encToken, Valid: true},
+			})
 
-		m["UserID"] = user.ID
-		resp.Data = m
+			// Set tokens on Cookies
+			tokenCookie := new(http.Cookie)
+			tokenCookie.Name = "access-token"
+			tokenCookie.Value = t
+			tokenCookie.HttpOnly = true
+			tokenCookie.Expires = time.Now().Add(time.Hour * 24)
+			c.SetCookie(tokenCookie)
+
+			refreshTokenCookie := new(http.Cookie)
+			refreshTokenCookie.Name = "refresh-token"
+			refreshTokenCookie.Value = rt
+			refreshTokenCookie.HttpOnly = true
+			refreshTokenCookie.Expires = time.Now().Add(time.Hour * 24 * 365)
+			c.SetCookie(refreshTokenCookie)
+
+			resp.Success = true
+			resp.Message = "User Logged In"
+			m := make(map[string]string)
+			m["UserID"] = user.ID
+			resp.Data = m
+		}
 	}
 
 	return c.JSON(http.StatusOK, resp)
@@ -167,6 +182,25 @@ func Login(c echo.Context) error {
 }
 
 func RenewToken(c echo.Context) error {
-	claims := utils.GetClaims(c)
-	return c.JSON(http.StatusOK, claims)
+	cookie, err := c.Cookie("refresh-token")
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	token, tokenErr := utils.GetAccessTokenFromRefreshToken(c, cookie.Value)
+	if tokenErr != nil {
+		return c.JSON(http.StatusInternalServerError, tokenErr.Error())
+	}
+
+	tokenCookie := new(http.Cookie)
+	tokenCookie.Name = "access-token"
+	tokenCookie.Value = token
+	tokenCookie.HttpOnly = true
+	tokenCookie.Expires = time.Now().Add(time.Hour * 24)
+	c.SetCookie(tokenCookie)
+
+	m := make(map[string]bool)
+	m["Success"] = true
+	return c.JSON(http.StatusOK, m)
 }

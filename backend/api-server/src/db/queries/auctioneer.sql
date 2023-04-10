@@ -30,3 +30,21 @@ DELETE FROM
   auctioneer
 WHERE
   id = $1;
+
+
+-- name: SaveRefreshTokenToDB :exec
+UPDATE
+  auctioneer
+SET
+  refresh_token = $1
+WHERE
+  id = $2;
+
+
+-- name: GetRefreshTokenByID :one
+SELECT
+  refresh_token
+FROM
+  auctioneer
+WHERE
+  id = $1;

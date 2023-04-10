@@ -7,7 +7,6 @@ import (
 	"auctioneer/src/utils"
 	"database/sql"
 	"fmt"
-	"net/http"
 	"os"
 
 	"github.com/golang-jwt/jwt/v4"
@@ -40,10 +39,6 @@ func Initiate() {
 
 	e.Use(middleware.Recover())
 
-	e.GET("/", func(c echo.Context) error {
-		return c.JSON(http.StatusOK, "Hello, World!")
-	})
-
 	e.POST("/register", handlers.Register)
 
 	e.POST("/login", handlers.Login)
@@ -54,7 +49,7 @@ func Initiate() {
 		NewClaimsFunc: func(c echo.Context) jwt.Claims {
 			return new(utils.JwtCustomClaims)
 		},
-		TokenLookup: "cookie:access-token",
+		TokenLookup: "cookie:access-token,cookie:refresh-token",
 		SigningKey:  []byte(os.Getenv("HASH_SECRET")),
 	}
 

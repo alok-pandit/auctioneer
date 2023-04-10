@@ -1,0 +1,4 @@
+ALTER TABLE
+  AUCTIONEER
+ADD
+  COLUMN refresh_token TEXT;

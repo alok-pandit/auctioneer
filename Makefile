@@ -32,7 +32,8 @@ migration-down:
 	migrate -path backend/api-server/src/db/migrations/ -database ${DB_MIGRATION_URL} -verbose down
 
 migration-fix:
-	migrate -path backend/api-server/src/db/migrations/ -database ${DB_MIGRATION_URL} force ${version}
+	@read -p "Enter Migration Version Number: " version; \
+	migrate -path backend/api-server/src/db/migrations/ -database ${DB_MIGRATION_URL} force $$version
 
 sqlc-compile:
 	cd backend/api-server/ && sqlc compile && cd ..
@@ -44,4 +45,4 @@ fe:
 	cd frontend && yarn dev && cd ..
 
 lint:
-	golangci-lint run backend/api-server/src
+	cd backend/api-server/ && golangci-lint run ./src && cd ..
