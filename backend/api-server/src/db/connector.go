@@ -1,7 +1,7 @@
 package db
 
 // import (
-import db "auctioneer/src/db/gen"
+import "auctioneer/src/db/gen"
 
 // 	"context"
 // 	"fmt"
@@ -12,7 +12,7 @@ import db "auctioneer/src/db/gen"
 
 // var Conn *pgx.Conn
 
-var Sqlc *db.Queries
+var Sqlc *gen.Queries
 
 // func Initialize() {
 
