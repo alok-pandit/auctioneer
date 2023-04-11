@@ -159,7 +159,7 @@ func Login(c echo.Context) error {
 			tokenCookie.Name = "access-token"
 			tokenCookie.Value = t
 			tokenCookie.HttpOnly = true
-			tokenCookie.Expires = time.Now().Add(time.Hour * 24)
+			tokenCookie.Expires = time.Now().Add(time.Minute * 1)
 			c.SetCookie(tokenCookie)
 
 			refreshTokenCookie := new(http.Cookie)
@@ -181,26 +181,17 @@ func Login(c echo.Context) error {
 
 }
 
-func RenewToken(c echo.Context) error {
-	cookie, err := c.Cookie("refresh-token")
+func GetAllAuctioneers(c echo.Context) error {
+
+	a, err := db.Sqlc.GetAllAuctioneers(c.Request().Context())
 
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	token, tokenErr := utils.GetAccessTokenFromRefreshToken(c, cookie.Value)
-	if tokenErr != nil {
-		return c.JSON(http.StatusInternalServerError, tokenErr.Error())
-	}
-
-	tokenCookie := new(http.Cookie)
-	tokenCookie.Name = "access-token"
-	tokenCookie.Value = token
-	tokenCookie.HttpOnly = true
-	tokenCookie.Expires = time.Now().Add(time.Hour * 24)
-	c.SetCookie(tokenCookie)
-
-	m := make(map[string]bool)
+	m := make(map[string]interface{})
 	m["Success"] = true
+	m["Data"] = a
 	return c.JSON(http.StatusOK, m)
+
 }

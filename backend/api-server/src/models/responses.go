@@ -14,5 +14,5 @@ type Response struct {
 
 type LoginInput struct {
 	Username string `json:"username" validate:"required"`
-	Password string `json:"password" validate:"required,gt=6"`
+	Password string `json:"password" validate:"required,gte=4"`
 }

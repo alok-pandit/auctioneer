@@ -48,6 +48,44 @@ func (q *Queries) DeleteAuctioneer(ctx context.Context, id string) error {
 	return err
 }
 
+const getAllAuctioneers = `-- name: GetAllAuctioneers :many
+SELECT
+  id, full_name, username, password, auction_preferences, roles, refresh_token
+FROM
+  auctioneer
+`
+
+func (q *Queries) GetAllAuctioneers(ctx context.Context) ([]Auctioneer, error) {
+	rows, err := q.db.QueryContext(ctx, getAllAuctioneers)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Auctioneer{}
+	for rows.Next() {
+		var i Auctioneer
+		if err := rows.Scan(
+			&i.ID,
+			&i.FullName,
+			&i.Username,
+			&i.Password,
+			&i.AuctionPreferences,
+			pq.Array(&i.Roles),
+			&i.RefreshToken,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getAuctioneer = `-- name: GetAuctioneer :one
 SELECT
   password,

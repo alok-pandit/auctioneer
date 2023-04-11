@@ -43,19 +43,21 @@ func Initiate() {
 
 	e.POST("/login", handlers.Login)
 
+	e.GET("/renew-token", utils.RenewToken)
+
 	secure := e.Group("/secure")
 
 	config := echojwt.Config{
 		NewClaimsFunc: func(c echo.Context) jwt.Claims {
 			return new(utils.JwtCustomClaims)
 		},
-		TokenLookup: "cookie:access-token,cookie:refresh-token",
+		TokenLookup: "cookie:access-token",
 		SigningKey:  []byte(os.Getenv("HASH_SECRET")),
 	}
 
 	secure.Use(echojwt.WithConfig(config))
 
-	secure.GET("/renew-token", handlers.RenewToken)
+	secure.GET("/auctioneers", handlers.GetAllAuctioneers)
 
 	e.Logger.Fatal(e.Start(":" + os.Getenv("API_SERVER_PORT")))
 

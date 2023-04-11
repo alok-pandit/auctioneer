@@ -12,6 +12,7 @@ import (
 type Querier interface {
 	CreateAuctioneer(ctx context.Context, arg CreateAuctioneerParams) error
 	DeleteAuctioneer(ctx context.Context, id string) error
+	GetAllAuctioneers(ctx context.Context) ([]Auctioneer, error)
 	GetAuctioneer(ctx context.Context, username string) (GetAuctioneerRow, error)
 	GetRefreshTokenByID(ctx context.Context, id string) (sql.NullString, error)
 	ListAuctioneers(ctx context.Context) ([]Auctioneer, error)

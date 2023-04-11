@@ -48,3 +48,10 @@ FROM
   auctioneer
 WHERE
   id = $1;
+
+
+-- name: GetAllAuctioneers :many
+SELECT
+  *
+FROM
+  auctioneer;
