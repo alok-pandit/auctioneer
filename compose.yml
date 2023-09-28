@@ -2,14 +2,14 @@ name: auctioneer
 services:
   cache:
     image: "public.ecr.aws/readyset/readyset:beta-latest"
-    network_mode: "host"
+    # network_mode: "host"
     platform: linux/amd64
     expose:
       - 6033 # ReadySet Server Prometheus metrics at http://readyset:6033/metrics
       - 6034 # ReadySet Adapter Prometheus metrics at http://readyset:6034/metrics
-    # ports:
-    #   # The ReadySet Adapter listen port, i.e. what your application / SQL shell connects to
-    #   - "5433:5433"
+    ports:
+      # The ReadySet Adapter listen port, i.e. what your application / SQL shell connects to
+      - "5433:5433"
     environment:
       DEPLOYMENT_ENV: quickstart_docker
       DB_DIR: /state
@@ -20,7 +20,7 @@ services:
       STANDALONE: true
       DEPLOYMENT: docker_compose_deployment
       LISTEN_ADDRESS: 0.0.0.0:5433
-      UPSTREAM_DB_URL: postgresql://postgres:postgres@127.0.0.1:5432/auctioneer?sslmode=disable
+      UPSTREAM_DB_URL: postgresql://postgres:postgres@host.docker.internal/auctioneer?sslmode=disable
       CONTROLLER_ADDRESS: 0.0.0.0
     volumes:
       - "readyset:/state"
@@ -53,16 +53,17 @@ services:
       - 9091
   grafana:
     image: "public.ecr.aws/readyset/readyset-grafana:latest"
-    network_mode: "host"
-    # ports:
-    #   - 4000:4000
+    # network_mode: "host"
+    ports:
+      - 4000:4000
     environment:
-      UPSTREAM_DB_URL: postgresql://postgres:postgres@127.0.0.1:5432/auctioneer?sslmode=disable
+      UPSTREAM_DB_URL: postgresql://postgres:postgres@host.docker.internal/auctioneer?sslmode=disable
       RS_PORT: 5433
       RS_GRAFANA_PORT: 4000
   postgres:
     image: postgres:16-alpine
-    network_mode: "host"
+    ports:
+      - 5432:5432
     restart: unless-stopped
     volumes:
       - postgres-data:/var/lib/postgresql/data

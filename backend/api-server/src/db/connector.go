@@ -1,29 +1,23 @@
 package db
 
-// import (
-import "auctioneer/src/db/gen"
+import (
+	"auctioneer/src/db/gen"
+	"database/sql"
+	"fmt"
+	"os"
 
-// 	"context"
-// 	"fmt"
-// 	"os"
-
-// 	_ "github.com/jackc/pgx/v4"
-// )
-
-// var Conn *pgx.Conn
+	_ "github.com/jackc/pgx/v5/stdlib"
+)
 
 var Sqlc *gen.Queries
 
-// func Initialize() {
+func Connect() *sql.DB {
 
-// 	fmt.Println(os.Getenv("DB_URL"))
-
-// 	conn, err := pgx.Connect(context.Background(), os.Getenv("DB_URL"))
-
-// 	if err != nil {
-// 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
-// 		os.Exit(1)
-// 	}
-
-// 	Conn = conn
-// }
+	fmt.Println(os.Getenv("DB_URL"))
+	conn, err := sql.Open("pgx", "postgres://postgres:postgres@localhost:5432/auctioneer?ssl_mode=disable")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+		os.Exit(1)
+	}
+	return conn
+}

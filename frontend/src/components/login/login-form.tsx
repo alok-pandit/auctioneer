@@ -59,13 +59,13 @@ const LoginForm = () => {
         type={'password'}
       /> */}
       <div className="ml-2 flex flex-row items-center justify-center">
-        <button className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gray-800 px-10 py-4 font-mono font-medium tracking-tighter text-white ">
+        <button className="btn group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gray-800 px-10 py-4 font-mono font-medium tracking-tighter text-white ">
           <span className="absolute h-0 w-0 rounded-full bg-gray-900 transition-all duration-500 ease-out group-hover:h-56 group-hover:w-56"></span>
           <span className="absolute inset-0 -mt-1 h-full w-full rounded-lg bg-gradient-to-b from-transparent via-transparent to-gray-400 opacity-30"></span>
           <span className="relative">Login</span>
         </button>
         <span className="mx-2">Or</span>
-        <button className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gray-800 px-10 py-4 font-mono font-medium tracking-tighter text-white ">
+        <button className="btn activate:scale-75 group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gray-800 px-10 py-4 font-mono font-medium tracking-tighter text-white">
           <span className="absolute h-0 w-0 rounded-full bg-gray-900 transition-all duration-500 ease-out group-hover:h-56 group-hover:w-56"></span>
           <span className="absolute inset-0 -mt-1 h-full w-full rounded-lg bg-gradient-to-b from-transparent via-transparent to-gray-400 opacity-30"></span>
           <span className="relative">Sign Up</span>

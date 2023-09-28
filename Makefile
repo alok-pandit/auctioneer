@@ -36,13 +36,13 @@ migration-fix:
 	migrate -path backend/api-server/src/db/migrations/ -database ${DB_MIGRATION_URL} force $$version
 
 sqlc-compile:
-	cd backend/api-server/ && sqlc compile && cd ..
+	cd backend/api-server/ && sqlc compile && cd ../..
 
 sqlc-gen:
-	cd backend/api-server/ && sqlc generate && cd ..
+	cd backend/api-server/ && sqlc generate && cd ../..
 
 fe:
 	cd frontend && yarn dev && cd ..
 
 lint:
-	cd backend/api-server/ && golangci-lint run ./src && cd ..
+	cd backend/api-server/ && golangci-lint run ./src && cd ../..

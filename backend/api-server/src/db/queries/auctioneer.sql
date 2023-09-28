@@ -1,3 +1,4 @@
+-- auctioneer.sql
 -- name: GetAuctioneer :one
 SELECT
   password,
@@ -15,7 +16,7 @@ SELECT
 FROM
   auctioneer
 ORDER BY
-  name;
+  full_name;
 
 
 -- name: CreateAuctioneer :exec
