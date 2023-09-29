@@ -31,7 +31,7 @@ func Register(c echo.Context) error {
 
 	id := ksuid.New()
 
-	hashedPassword, err := utils.HashPassword(newUser.Password)
+	hashedPassword, err := utils.ArgonHash(newUser.Password)
 
 	if err != nil {
 
@@ -121,12 +121,12 @@ func Login(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, resp)
 	}
 
-	ok := utils.ComparePasswordHash(login.Password, user.Password)
+	ok, err := utils.ArgonMatch(login.Password, user.Password)
 
 	if !ok {
 		resp := models.Response{
 			Success: false,
-			Message: "Passwords Do Not Match!",
+			Message: err.Error(),
 		}
 
 		return c.JSON(http.StatusInternalServerError, resp)

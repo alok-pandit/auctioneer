@@ -134,7 +134,7 @@ func GetAccessTokenFromRefreshToken(c echo.Context, rt string) (string, error) {
 		return t, nil
 
 	} else {
-		return "", errors.New("Invalid Refresh Token!")
+		return "", errors.New("invalid refresh token")
 	}
 
 }

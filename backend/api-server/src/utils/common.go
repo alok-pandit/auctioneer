@@ -2,8 +2,6 @@ package utils
 
 import (
 	"time"
-
-	"golang.org/x/crypto/bcrypt"
 )
 
 func BirthDateFormatter(d string) string {
@@ -16,24 +14,4 @@ func BirthDateFormatter(d string) string {
 
 	return myDate.Format(format)
 
-}
-
-func HashPassword(pwd string) (string, error) {
-	password := []byte(pwd)
-
-	hashedPassword, err := bcrypt.GenerateFromPassword(password, bcrypt.DefaultCost)
-	if err != nil {
-		return "", err
-	}
-
-	return string(hashedPassword), nil
-}
-
-func ComparePasswordHash(upwd string, dbpwd string) bool {
-	if err := bcrypt.CompareHashAndPassword([]byte(dbpwd), []byte(upwd)); err != nil {
-
-		return false
-
-	}
-	return true
 }
