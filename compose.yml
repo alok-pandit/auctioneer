@@ -2,14 +2,14 @@ name: auctioneer
 services:
   cache:
     image: "public.ecr.aws/readyset/readyset:beta-latest"
-    # network_mode: "host"
+    network_mode: "host"
     platform: linux/amd64
     expose:
       - 6033 # ReadySet Server Prometheus metrics at http://readyset:6033/metrics
       - 6034 # ReadySet Adapter Prometheus metrics at http://readyset:6034/metrics
-    ports:
+      # ports:
       # The ReadySet Adapter listen port, i.e. what your application / SQL shell connects to
-      - "5433:5433"
+      # - "5433:5433"
     environment:
       DEPLOYMENT_ENV: quickstart_docker
       DB_DIR: /state
@@ -20,26 +20,26 @@ services:
       STANDALONE: true
       DEPLOYMENT: docker_compose_deployment
       LISTEN_ADDRESS: 0.0.0.0:5433
-      UPSTREAM_DB_URL: postgresql://postgres:postgres@host.docker.internal/auctioneer?sslmode=disable
+      UPSTREAM_DB_URL: postgresql://postgres:postgres@localhost:5432/auctioneer?sslmode=disable
       CONTROLLER_ADDRESS: 0.0.0.0
     volumes:
       - "readyset:/state"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     healthcheck:
-      test: ["CMD", "curl", "--fail", "127.0.0.1:6033/health"]
+      test: [ "CMD", "curl", "--fail", "127.0.0.1:6033/health" ]
       interval: 2s
       timeout: 1s
       retries: 5
       start_period: 5s
-    depends_on:
-      postgres:
-        condition: service_healthy
+    # depends_on:
+    #   postgres:
+    #     condition: service_healthy
   prometheus:
     image: "public.ecr.aws/readyset/readyset-prometheus:latest"
     network_mode: "host"
     healthcheck:
-      test: ["CMD", "nc", "-vz", "localhost", "9090"]
+      test: [ "CMD", "nc", "-vz", "localhost", "9090" ]
       interval: 5s
       timeout: 5s
       retries: 12
@@ -53,35 +53,35 @@ services:
       - 9091
   grafana:
     image: "public.ecr.aws/readyset/readyset-grafana:latest"
-    # network_mode: "host"
-    ports:
-      - 4000:4000
+    network_mode: "host"
+    # ports:
+    # - 4000:4000
     environment:
-      UPSTREAM_DB_URL: postgresql://postgres:postgres@host.docker.internal/auctioneer?sslmode=disable
+      UPSTREAM_DB_URL: postgresql://postgres:postgres@localhost:5432/auctioneer?sslmode=disable
       RS_PORT: 5433
       RS_GRAFANA_PORT: 4000
-  postgres:
-    image: postgres:16-alpine
-    ports:
-      - 5432:5432
-    restart: unless-stopped
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: auctioneer
-    command:
-      - "postgres"
-      - "-c"
-      - "wal_level=logical"
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 12
+  # postgres:
+  #   image: postgres:16-alpine
+  #   ports:
+  #     - 5432:5432
+  #   restart: unless-stopped
+  #   volumes:
+  #     - postgres-data:/var/lib/postgresql/data
+  #   environment:
+  #     POSTGRES_PASSWORD: postgres
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_DB: auctioneer
+  #   command:
+  #     - "postgres"
+  #     - "-c"
+  #     - "wal_level=logical"
+  #   healthcheck:
+  #     test: ["CMD", "pg_isready", "-U", "postgres"]
+  #     interval: 5s
+  #     timeout: 5s
+  #     retries: 12
 volumes:
   prometheus: ~
   readyset: ~
-  postgres-data: ~
-  postgres: ~
+  # postgres-data: ~
+  # postgres: ~

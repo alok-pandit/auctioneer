@@ -5,11 +5,11 @@ import (
 	"auctioneer/src/db/gen"
 	"auctioneer/src/models"
 	"auctioneer/src/utils"
-	"database/sql"
 	"net/http"
 	"os"
 	"time"
 
+	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/labstack/echo/v4"
 	"github.com/segmentio/ksuid"
 )
@@ -151,7 +151,7 @@ func Login(c echo.Context) error {
 
 			db.Sqlc.SaveRefreshTokenToDB(c.Request().Context(), gen.SaveRefreshTokenToDBParams{
 				ID:           user.ID,
-				RefreshToken: sql.NullString{String: encToken, Valid: true},
+				RefreshToken: pgtype.Text{String: encToken, Valid: true},
 			})
 
 			// Set tokens on Cookies

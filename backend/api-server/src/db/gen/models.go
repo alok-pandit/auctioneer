@@ -5,11 +5,10 @@
 package gen
 
 import (
-	"database/sql"
 	"database/sql/driver"
 	"fmt"
 
-	"github.com/sqlc-dev/pqtype"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type Role string
@@ -77,11 +76,11 @@ func AllRoleValues() []Role {
 }
 
 type Auctioneer struct {
-	ID                 string                `db:"id" json:"id"`
-	FullName           string                `db:"full_name" json:"fullName"`
-	Username           string                `db:"username" json:"username"`
-	Password           string                `db:"password" json:"password"`
-	AuctionPreferences pqtype.NullRawMessage `db:"auction_preferences" json:"auctionPreferences"`
-	Roles              []Role                `db:"roles" json:"roles"`
-	RefreshToken       sql.NullString        `db:"refresh_token" json:"refreshToken"`
+	ID                 string      `db:"id" json:"id"`
+	FullName           string      `db:"full_name" json:"fullName"`
+	Username           string      `db:"username" json:"username"`
+	Password           string      `db:"password" json:"password"`
+	AuctionPreferences []byte      `db:"auction_preferences" json:"auctionPreferences"`
+	Roles              []Role      `db:"roles" json:"roles"`
+	RefreshToken       pgtype.Text `db:"refresh_token" json:"refreshToken"`
 }

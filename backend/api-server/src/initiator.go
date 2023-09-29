@@ -5,6 +5,7 @@ import (
 	"auctioneer/src/db/gen"
 	"auctioneer/src/handlers"
 	"auctioneer/src/utils"
+	"context"
 	"os"
 
 	"github.com/golang-jwt/jwt/v4"
@@ -25,7 +26,7 @@ func Initiate() {
 
 	conn := db.Connect()
 
-	defer conn.Close()
+	defer conn.Close(context.Background())
 
 	db.Sqlc = gen.New(conn)
 

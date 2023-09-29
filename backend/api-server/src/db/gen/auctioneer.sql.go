@@ -7,9 +7,8 @@ package gen
 
 import (
 	"context"
-	"database/sql"
 
-	"github.com/lib/pq"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 const createAuctioneer = `-- name: CreateAuctioneer :exec
@@ -27,7 +26,7 @@ type CreateAuctioneerParams struct {
 }
 
 func (q *Queries) CreateAuctioneer(ctx context.Context, arg CreateAuctioneerParams) error {
-	_, err := q.db.ExecContext(ctx, createAuctioneer,
+	_, err := q.db.Exec(ctx, createAuctioneer,
 		arg.ID,
 		arg.FullName,
 		arg.Username,
@@ -44,7 +43,7 @@ WHERE
 `
 
 func (q *Queries) DeleteAuctioneer(ctx context.Context, id string) error {
-	_, err := q.db.ExecContext(ctx, deleteAuctioneer, id)
+	_, err := q.db.Exec(ctx, deleteAuctioneer, id)
 	return err
 }
 
@@ -56,7 +55,7 @@ FROM
 `
 
 func (q *Queries) GetAllAuctioneers(ctx context.Context) ([]Auctioneer, error) {
-	rows, err := q.db.QueryContext(ctx, getAllAuctioneers)
+	rows, err := q.db.Query(ctx, getAllAuctioneers)
 	if err != nil {
 		return nil, err
 	}
@@ -70,15 +69,12 @@ func (q *Queries) GetAllAuctioneers(ctx context.Context) ([]Auctioneer, error) {
 			&i.Username,
 			&i.Password,
 			&i.AuctionPreferences,
-			pq.Array(&i.Roles),
+			&i.Roles,
 			&i.RefreshToken,
 		); err != nil {
 			return nil, err
 		}
 		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err
@@ -105,9 +101,9 @@ type GetAuctioneerRow struct {
 
 // auctioneer.sql
 func (q *Queries) GetAuctioneer(ctx context.Context, username string) (GetAuctioneerRow, error) {
-	row := q.db.QueryRowContext(ctx, getAuctioneer, username)
+	row := q.db.QueryRow(ctx, getAuctioneer, username)
 	var i GetAuctioneerRow
-	err := row.Scan(&i.Password, &i.ID, pq.Array(&i.Roles))
+	err := row.Scan(&i.Password, &i.ID, &i.Roles)
 	return i, err
 }
 
@@ -120,9 +116,9 @@ WHERE
   id = $1
 `
 
-func (q *Queries) GetRefreshTokenByID(ctx context.Context, id string) (sql.NullString, error) {
-	row := q.db.QueryRowContext(ctx, getRefreshTokenByID, id)
-	var refresh_token sql.NullString
+func (q *Queries) GetRefreshTokenByID(ctx context.Context, id string) (pgtype.Text, error) {
+	row := q.db.QueryRow(ctx, getRefreshTokenByID, id)
+	var refresh_token pgtype.Text
 	err := row.Scan(&refresh_token)
 	return refresh_token, err
 }
@@ -137,7 +133,7 @@ ORDER BY
 `
 
 func (q *Queries) ListAuctioneers(ctx context.Context) ([]Auctioneer, error) {
-	rows, err := q.db.QueryContext(ctx, listAuctioneers)
+	rows, err := q.db.Query(ctx, listAuctioneers)
 	if err != nil {
 		return nil, err
 	}
@@ -151,15 +147,12 @@ func (q *Queries) ListAuctioneers(ctx context.Context) ([]Auctioneer, error) {
 			&i.Username,
 			&i.Password,
 			&i.AuctionPreferences,
-			pq.Array(&i.Roles),
+			&i.Roles,
 			&i.RefreshToken,
 		); err != nil {
 			return nil, err
 		}
 		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err
@@ -177,11 +170,11 @@ WHERE
 `
 
 type SaveRefreshTokenToDBParams struct {
-	RefreshToken sql.NullString `db:"refresh_token" json:"refreshToken"`
-	ID           string         `db:"id" json:"id"`
+	RefreshToken pgtype.Text `db:"refresh_token" json:"refreshToken"`
+	ID           string      `db:"id" json:"id"`
 }
 
 func (q *Queries) SaveRefreshTokenToDB(ctx context.Context, arg SaveRefreshTokenToDBParams) error {
-	_, err := q.db.ExecContext(ctx, saveRefreshTokenToDB, arg.RefreshToken, arg.ID)
+	_, err := q.db.Exec(ctx, saveRefreshTokenToDB, arg.RefreshToken, arg.ID)
 	return err
 }

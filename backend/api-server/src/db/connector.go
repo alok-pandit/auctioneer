@@ -2,19 +2,20 @@ package db
 
 import (
 	"auctioneer/src/db/gen"
-	"database/sql"
+	"context"
 	"fmt"
 	"os"
 
+	"github.com/jackc/pgx/v5"
 	_ "github.com/jackc/pgx/v5/stdlib"
+	_ "github.com/lib/pq"
 )
 
 var Sqlc *gen.Queries
 
-func Connect() *sql.DB {
+func Connect() *pgx.Conn {
 
-	fmt.Println(os.Getenv("DB_URL"))
-	conn, err := sql.Open("pgx", "postgres://postgres:postgres@localhost:5432/auctioneer?ssl_mode=disable")
+	conn, err := pgx.Connect(context.Background(), os.Getenv("DB_URL"))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)

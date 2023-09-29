@@ -6,7 +6,8 @@ package gen
 
 import (
 	"context"
-	"database/sql"
+
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type Querier interface {
@@ -15,7 +16,7 @@ type Querier interface {
 	GetAllAuctioneers(ctx context.Context) ([]Auctioneer, error)
 	// auctioneer.sql
 	GetAuctioneer(ctx context.Context, username string) (GetAuctioneerRow, error)
-	GetRefreshTokenByID(ctx context.Context, id string) (sql.NullString, error)
+	GetRefreshTokenByID(ctx context.Context, id string) (pgtype.Text, error)
 	ListAuctioneers(ctx context.Context) ([]Auctioneer, error)
 	SaveRefreshTokenToDB(ctx context.Context, arg SaveRefreshTokenToDBParams) error
 }
