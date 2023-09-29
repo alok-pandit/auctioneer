@@ -5,6 +5,7 @@ import (
 	"auctioneer/src/db/gen"
 	"auctioneer/src/models"
 	"auctioneer/src/utils"
+	"fmt"
 	"net/http"
 	"os"
 	"time"
@@ -88,6 +89,8 @@ func Login(c echo.Context) error {
 
 	err := utils.ValidateStruct(login)
 
+	fmt.Println("Validating Struct")
+
 	if err != nil {
 
 		resp := models.Response{
@@ -100,6 +103,8 @@ func Login(c echo.Context) error {
 	}
 
 	resp := models.Response{}
+
+	fmt.Println("About to get db data")
 
 	user, err := db.Sqlc.GetAuctioneer(c.Request().Context(), login.Username)
 
@@ -121,6 +126,10 @@ func Login(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, resp)
 	}
 
+	fmt.Println("login.Password")
+	fmt.Println(login.Password)
+	fmt.Println("user.Password")
+	fmt.Println(user.Password)
 	ok, err := utils.ArgonMatch(login.Password, user.Password)
 
 	if !ok {
@@ -188,6 +197,7 @@ func GetAllAuctioneers(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
+	fmt.Println(utils.GetClaimsFromContext(c))
 
 	m := make(map[string]interface{})
 	m["Success"] = true

@@ -84,9 +84,9 @@ func (q *Queries) GetAllAuctioneers(ctx context.Context) ([]Auctioneer, error) {
 
 const getAuctioneer = `-- name: GetAuctioneer :one
 SELECT
-  password,
+  username,
   id,
-  roles
+  password
 FROM
   auctioneer
 WHERE
@@ -94,16 +94,16 @@ WHERE
 `
 
 type GetAuctioneerRow struct {
-	Password string `db:"password" json:"password"`
+	Username string `db:"username" json:"username"`
 	ID       string `db:"id" json:"id"`
-	Roles    []Role `db:"roles" json:"roles"`
+	Password string `db:"password" json:"password"`
 }
 
 // auctioneer.sql
 func (q *Queries) GetAuctioneer(ctx context.Context, username string) (GetAuctioneerRow, error) {
 	row := q.db.QueryRow(ctx, getAuctioneer, username)
 	var i GetAuctioneerRow
-	err := row.Scan(&i.Password, &i.ID, &i.Roles)
+	err := row.Scan(&i.Username, &i.ID, &i.Password)
 	return i, err
 }
 

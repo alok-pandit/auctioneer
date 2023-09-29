@@ -1,9 +1,9 @@
 -- auctioneer.sql
 -- name: GetAuctioneer :one
 SELECT
-  password,
+  username,
   id,
-  roles
+  password
 FROM
   auctioneer
 WHERE
