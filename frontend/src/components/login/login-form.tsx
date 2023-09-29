@@ -1,4 +1,14 @@
+import { useEffect } from 'react'
+import { useQuery } from 'react-query'
+
+import { login } from '@/apis'
+
 const LoginForm = () => {
+  const { data, refetch } = useQuery('login', () => login('alok', 'alok'))
+  useEffect(() => {
+    // eslint-disable-next-line
+    console.log(data)
+  }, [data])
   return (
     <div className="flex h-full w-full flex-col items-center justify-evenly">
       <div className="mx-auto max-w-md">
@@ -59,7 +69,10 @@ const LoginForm = () => {
         type={'password'}
       /> */}
       <div className="ml-2 flex flex-row items-center justify-center">
-        <button className="btn group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gray-800 px-10 py-4 font-mono font-medium tracking-tighter text-white ">
+        <button
+          onClick={() => refetch()}
+          className="btn group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gray-800 px-10 py-4 font-mono font-medium tracking-tighter text-white "
+        >
           <span className="absolute h-0 w-0 rounded-full bg-gray-900 transition-all duration-500 ease-out group-hover:h-56 group-hover:w-56"></span>
           <span className="absolute inset-0 -mt-1 h-full w-full rounded-lg bg-gradient-to-b from-transparent via-transparent to-gray-400 opacity-30"></span>
           <span className="relative">Login</span>

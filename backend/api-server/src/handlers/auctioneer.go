@@ -126,10 +126,6 @@ func Login(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, resp)
 	}
 
-	fmt.Println("login.Password")
-	fmt.Println(login.Password)
-	fmt.Println("user.Password")
-	fmt.Println(user.Password)
 	ok, err := utils.ArgonMatch(login.Password, user.Password)
 
 	if !ok {

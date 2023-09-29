@@ -1,5 +1,5 @@
-import { w } from 'windstitch'
 import clsx from 'clsx'
+import { w } from 'windstitch'
 
 export const Main = w.main(
   clsx(
