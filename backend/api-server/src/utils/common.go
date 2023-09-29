@@ -2,6 +2,8 @@ package utils
 
 import (
 	"time"
+
+	"github.com/go-playground/validator"
 )
 
 func BirthDateFormatter(d string) string {
@@ -13,5 +15,21 @@ func BirthDateFormatter(d string) string {
 	myDate, _ := time.Parse(format, d)
 
 	return myDate.Format(format)
+
+}
+
+func ValidateStruct(s interface{}) error {
+
+	validate := validator.New()
+
+	err := validate.Struct(s)
+
+	if err != nil {
+
+		return err
+
+	}
+
+	return nil
 
 }
