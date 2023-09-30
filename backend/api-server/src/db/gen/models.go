@@ -5,75 +5,8 @@
 package gen
 
 import (
-	"database/sql/driver"
-	"fmt"
-
 	"github.com/jackc/pgx/v5/pgtype"
 )
-
-type Role string
-
-const (
-	RoleHost      Role = "host"
-	RoleUser      Role = "user"
-	RoleAdmin     Role = "admin"
-	RoleModerator Role = "moderator"
-)
-
-func (e *Role) Scan(src interface{}) error {
-	switch s := src.(type) {
-	case []byte:
-		*e = Role(s)
-	case string:
-		*e = Role(s)
-	default:
-		return fmt.Errorf("unsupported scan type for Role: %T", src)
-	}
-	return nil
-}
-
-type NullRole struct {
-	Role  Role `json:"role"`
-	Valid bool `json:"valid"` // Valid is true if Role is not NULL
-}
-
-// Scan implements the Scanner interface.
-func (ns *NullRole) Scan(value interface{}) error {
-	if value == nil {
-		ns.Role, ns.Valid = "", false
-		return nil
-	}
-	ns.Valid = true
-	return ns.Role.Scan(value)
-}
-
-// Value implements the driver Valuer interface.
-func (ns NullRole) Value() (driver.Value, error) {
-	if !ns.Valid {
-		return nil, nil
-	}
-	return string(ns.Role), nil
-}
-
-func (e Role) Valid() bool {
-	switch e {
-	case RoleHost,
-		RoleUser,
-		RoleAdmin,
-		RoleModerator:
-		return true
-	}
-	return false
-}
-
-func AllRoleValues() []Role {
-	return []Role{
-		RoleHost,
-		RoleUser,
-		RoleAdmin,
-		RoleModerator,
-	}
-}
 
 type Auctioneer struct {
 	ID                 string      `db:"id" json:"id"`
@@ -81,6 +14,6 @@ type Auctioneer struct {
 	Username           string      `db:"username" json:"username"`
 	Password           string      `db:"password" json:"password"`
 	AuctionPreferences []byte      `db:"auction_preferences" json:"auctionPreferences"`
-	Roles              []Role      `db:"roles" json:"roles"`
+	Role               pgtype.Int2 `db:"role" json:"role"`
 	RefreshToken       pgtype.Text `db:"refresh_token" json:"refreshToken"`
 }

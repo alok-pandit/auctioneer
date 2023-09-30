@@ -49,7 +49,7 @@ func (q *Queries) DeleteAuctioneer(ctx context.Context, id string) error {
 
 const getAllAuctioneers = `-- name: GetAllAuctioneers :many
 SELECT
-  id, full_name, username, password, auction_preferences, roles, refresh_token
+  id, full_name, username, password, auction_preferences, role, refresh_token
 FROM
   auctioneer
 `
@@ -69,7 +69,7 @@ func (q *Queries) GetAllAuctioneers(ctx context.Context) ([]Auctioneer, error) {
 			&i.Username,
 			&i.Password,
 			&i.AuctionPreferences,
-			&i.Roles,
+			&i.Role,
 			&i.RefreshToken,
 		); err != nil {
 			return nil, err
@@ -125,7 +125,7 @@ func (q *Queries) GetRefreshTokenByID(ctx context.Context, id string) (pgtype.Te
 
 const listAuctioneers = `-- name: ListAuctioneers :many
 SELECT
-  id, full_name, username, password, auction_preferences, roles, refresh_token
+  id, full_name, username, password, auction_preferences, role, refresh_token
 FROM
   auctioneer
 ORDER BY
@@ -147,7 +147,7 @@ func (q *Queries) ListAuctioneers(ctx context.Context) ([]Auctioneer, error) {
 			&i.Username,
 			&i.Password,
 			&i.AuctionPreferences,
-			&i.Roles,
+			&i.Role,
 			&i.RefreshToken,
 		); err != nil {
 			return nil, err

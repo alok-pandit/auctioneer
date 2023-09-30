@@ -1,2 +1,2 @@
-ALTER TABLE
-  AUCTIONEER DROP COLUMN auction_preferences;
+ALTER TABLE AUCTIONEER
+DROP COLUMN auction_preferences;
