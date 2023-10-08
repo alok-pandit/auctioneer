@@ -30,12 +30,12 @@ func Initiate() {
 
 	db.Sqlc = gen.New(conn)
 
-	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
-		return func(c echo.Context) error {
-			c.Set("DB", db.Sqlc)
-			return next(c)
-		}
-	})
+	// e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+	// 	return func(c echo.Context) error {
+	// 		c.Set("DB", db.Sqlc)
+	// 		return next(c)
+	// 	}
+	// })
 
 	e.Use(middleware.Logger())
 

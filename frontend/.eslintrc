@@ -1,14 +1,13 @@
 {
   "extends": [
     // By extending from a plugin config, we can get recommended rules without having to add them manually.
-    // "next/core-web-vitals",
+    "next/core-web-vitals",
     "eslint:recommended",
     "plugin:import/recommended",
     "plugin:security/recommended",
     "plugin:xss/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:import/typescript",
-    "plugin:tailwindcss/recommended",
     // This disables the formatting rules in ESLint that Prettier is going to be responsible for handling.
     // Make sure it"s always the last config, so it gets the chance to override other configs.
     "eslint-config-prettier"
@@ -64,7 +63,6 @@
       }
     ],
     "import/no-named-as-default": 0,
-    "import/no-unresolved": 0,
     "import/order": [
       "error",
       {
@@ -95,7 +93,6 @@
   },
   "ignorePatterns": [
     "**/*.d.ts",
-    "**/*.gen.ts",
     "*.config.js"
   ]
 }

@@ -20,7 +20,7 @@ services:
       STANDALONE: true
       DEPLOYMENT: docker_compose_deployment
       LISTEN_ADDRESS: 0.0.0.0:5433
-      UPSTREAM_DB_URL: postgresql://postgres:postgres@localhost:5432/auctioneer?sslmode=disable
+      UPSTREAM_DB_URL: postgresql://postgres:postgres@localhost:5432/goauctioneer?sslmode=disable
       CONTROLLER_ADDRESS: 0.0.0.0
     volumes:
       - "readyset:/state"
@@ -57,7 +57,7 @@ services:
     # ports:
     # - 4000:4000
     environment:
-      UPSTREAM_DB_URL: postgresql://postgres:postgres@localhost:5432/auctioneer?sslmode=disable
+      UPSTREAM_DB_URL: postgresql://postgres:postgres@localhost:5432/goauctioneer?sslmode=disable
       RS_PORT: 5433
       RS_GRAFANA_PORT: 4000
   # postgres:

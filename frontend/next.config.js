@@ -1,9 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-    dirs: ['src'] // Only run ESLint on the 'src' directory during production builds (next build)
-  },
-  reactStrictMode: false
+    reactStrictMode: true,
+    swcMinify: true,
+    experimental: {
+        optimizeCss: true, // enabling this will enable SSR for Tailwind
+    }
 }
 
 module.exports = nextConfig
