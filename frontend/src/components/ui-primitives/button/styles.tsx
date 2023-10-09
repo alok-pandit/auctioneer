@@ -7,10 +7,10 @@ export const Div1 = w.div('relative inline-flex group')
 export const Div2 = w.div(
   clmx(
     'absolute',
-    'transitiona-all duration-1000 opacity-70',
+    'transitiona-all duration-2000 opacity-70',
     '-inset-px bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E]',
     'rounded-xl blur-lg',
-    'group-hover:opacity-100 group-hover:-inset-1 group-hover:duration-200',
+    'group-hover:opacity-100 group-hover:-inset-1 group-hover:duration-500 ease-in-out',
     'animate-tilt'
   )
 )

@@ -3,12 +3,20 @@ import { useFormContext } from 'react-hook-form'
 
 import { TextInput } from './styles'
 
+import { textGradient } from '@/app/styles'
+import { clmx } from '@/utils'
+
 const PasswordFormField = () => {
   const { register } = useFormContext()
   return (
     <Form.Field className="grid mb-[10px]" name="email">
       <div className="flex items-baseline justify-between">
-        <Form.Label className="text-[15px] font-medium leading-[35px] text-white dark:text-black">
+        <Form.Label
+          className={clmx(
+            'text-[15px] font-medium leading-[35px] text-white',
+            `${textGradient}`
+          )}
+        >
           Password:
         </Form.Label>
 

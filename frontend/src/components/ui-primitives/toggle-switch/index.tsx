@@ -1,5 +1,6 @@
 import * as Switch from '@radix-ui/react-switch'
 
+import { FunkyBackground } from '@/app/styles'
 import { clmx } from '@/utils'
 
 const ToggleSwitch = (props: {
@@ -7,12 +8,15 @@ const ToggleSwitch = (props: {
   checked: boolean
 }) => (
   <div className="flex items-center">
-    <label
-      className="text-white dark:text-black leading-none pr-[15px]"
-      htmlFor="dark-mode"
-    >
-      Dark mode:
-    </label>
+    <FunkyBackground>
+      <label
+        onClick={() => props.onChange(!props.checked)}
+        className={clmx('text-white leading-none pr-[15px] z-50')}
+        htmlFor="dark-mode"
+      >
+        Dark mode:
+      </label>
+    </FunkyBackground>
     <Switch.Root
       checked={props.checked}
       onCheckedChange={(c) => props.onChange(c)}

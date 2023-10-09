@@ -1,18 +1,21 @@
 'use client'
 
+import { Provider as JotaiProvider, createStore } from 'jotai'
 import { ReactNode, useState } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 
 export default function Providers({ children }: { children: ReactNode }) {
   const [queryClient] = useState(() => new QueryClient())
-
+  const jotaiStore = createStore()
   return (
     <QueryClientProvider client={queryClient}>
-      {children}
-      {process.env.NODE_ENV !== 'production' && (
-        <ReactQueryDevtools initialIsOpen={false} />
-      )}
+      <JotaiProvider store={jotaiStore}>
+        {children}
+        {process.env.NODE_ENV !== 'production' && (
+          <ReactQueryDevtools initialIsOpen={false} />
+        )}
+      </JotaiProvider>
     </QueryClientProvider>
   )
 }

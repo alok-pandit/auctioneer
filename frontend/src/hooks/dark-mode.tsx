@@ -1,21 +1,12 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useAtom } from 'jotai'
+import { useEffect } from 'react'
+
+import { darkAtom } from '@/atoms'
 
 const useDarkMode = () => {
-  const [isDark, setIsDark] = useState<boolean>(false)
-
-  const toggleDarkMode = (d: boolean) => {
-    if (d) {
-      document?.documentElement?.classList?.add('dark')
-    } else {
-      document?.documentElement?.classList?.remove('dark')
-    }
-
-    localStorage.theme = String(d ? 'dark' : 'light')
-
-    setIsDark(d)
-  }
+  const [isDark, setIsDark] = useAtom(darkAtom)
 
   useEffect(() => {
     if (
@@ -23,13 +14,13 @@ const useDarkMode = () => {
       (!('theme' in localStorage) &&
         window.matchMedia('(prefers-color-scheme: dark)').matches)
     ) {
-      toggleDarkMode(true)
+      setIsDark(true)
     } else {
-      toggleDarkMode(false)
+      setIsDark(false)
     }
-  }, [])
+  }, [setIsDark])
 
-  return { isDark, toggleDarkMode }
+  return { isDark, setIsDark }
 }
 
 export default useDarkMode

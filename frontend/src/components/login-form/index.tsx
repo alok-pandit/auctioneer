@@ -13,6 +13,7 @@ import PasswordFormField from './password-form-field'
 import UsernameFormField from './username-form-field'
 
 import useDarkMode from '@/hooks/dark-mode'
+import { clmx } from '@/utils'
 
 const formSchema = z.object({
   username: z.string().min(4),
@@ -34,22 +35,26 @@ const LoginForm = () => {
     methods.reset()
   }
 
-  const { isDark, toggleDarkMode } = useDarkMode()
+  const { isDark, setIsDark } = useDarkMode()
 
   return (
     <FormProvider {...methods}>
       <Form.Root
-        className="p-6 rounded-lg shadow-lg backdrop-blur-sm shadow-blue-400 bg-[conic-gradient(at_top_right,_var(--tw-gradient-stops))] from-gray-900 via-gray-300 to-gray-900 dark:bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] dark:from-gray-900 dark:to-gray-600"
+        className={clmx(
+          'p-6 rounded-lg shadow-lg backdrop-blur-sm shadow-blue-400',
+          'bg-[conic-gradient(at_top_right,_var(--tw-gradient-stops))]',
+          'from-gray-900 via-gray-300 to-gray-900',
+          'dark:bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))]',
+          'dark:from-gray-900 dark:to-gray-600'
+        )}
         onSubmit={(e) => {
           e.preventDefault()
           methods.handleSubmit(onSubmit)()
         }}
       >
         <div className="flex justify-between">
-          <h1 className="text-xl text-center text-white dark:text-black">
-            Login
-          </h1>
-          <ToggleSwitch onChange={toggleDarkMode} checked={isDark} />
+          <h1 className={clmx('text-xl text-center text-white')}>Login</h1>
+          <ToggleSwitch onChange={setIsDark} checked={isDark} />
         </div>
         <Separator.Root className="bg-white dark:bg-slate-700 data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px my-[15px]" />
         <UsernameFormField />
