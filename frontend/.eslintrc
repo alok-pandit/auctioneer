@@ -22,7 +22,7 @@
     },
     // Tells eslint how to resolve imports
     "import/resolver": {
-      "typescript": true,
+      "typescript": {},
       "node": {
         "extensions": [
           ".js",
@@ -63,6 +63,7 @@
       }
     ],
     "import/no-named-as-default": 0,
+    "import/no-unresolved": 0,
     "import/order": [
       "error",
       {

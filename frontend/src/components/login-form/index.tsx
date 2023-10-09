@@ -9,21 +9,21 @@ import * as z from 'zod'
 import Button from '../ui-primitives/button'
 import ToggleSwitch from '../ui-primitives/toggle-switch'
 
-import EmailFormField from './email-form-field'
 import PasswordFormField from './password-form-field'
+import UsernameFormField from './username-form-field'
 
 import useDarkMode from '@/hooks/dark-mode'
 
 const formSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8)
+  username: z.string().min(4),
+  password: z.string().min(4)
 })
 
 const LoginForm = () => {
   const methods = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: '',
+      username: '',
       password: ''
     }
   })
@@ -39,7 +39,7 @@ const LoginForm = () => {
   return (
     <FormProvider {...methods}>
       <Form.Root
-        className="p-6 rounded-lg shadow-lg backdrop-blur-sm shadow-blue-400 bg-[conic-gradient(at_top_right,_var(--tw-gradient-stops))] from-gray-900 via-gray-300 to-gray-900"
+        className="p-6 rounded-lg shadow-lg backdrop-blur-sm shadow-blue-400 bg-[conic-gradient(at_top_right,_var(--tw-gradient-stops))] from-gray-900 via-gray-300 to-gray-900 dark:bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] dark:from-gray-900 dark:to-gray-600"
         onSubmit={(e) => {
           e.preventDefault()
           methods.handleSubmit(onSubmit)()
@@ -52,9 +52,12 @@ const LoginForm = () => {
           <ToggleSwitch onChange={toggleDarkMode} checked={isDark} />
         </div>
         <Separator.Root className="bg-white dark:bg-slate-700 data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px my-[15px]" />
-        <EmailFormField />
+        <UsernameFormField />
         <PasswordFormField />
-        <Button className="self-center" title="Login" type="submit" />
+        <div className="flex justify-center gap-16 mt-6">
+          <Button title="Login" type="submit" />
+          <Button title="SignUp" type="button" />
+        </div>
       </Form.Root>
     </FormProvider>
   )

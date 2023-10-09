@@ -9,7 +9,7 @@ const PasswordFormField = () => {
     <Form.Field className="grid mb-[10px]" name="email">
       <div className="flex items-baseline justify-between">
         <Form.Label className="text-[15px] font-medium leading-[35px] text-white dark:text-black">
-          Password
+          Password:
         </Form.Label>
 
         <Form.Message
@@ -23,14 +23,14 @@ const PasswordFormField = () => {
       <Form.Control asChild>
         <TextInput
           type="password"
-          pattern={
-            '/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})/'
-          }
+          // pattern={
+          //   '/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})/'
+          // }
           required
           {...register('password')}
         />
       </Form.Control>
-      <Form.Message
+      {/* <Form.Message
         className="text-[13px] text-white dark:text-black opacity-[0.8] break-words"
         match="patternMismatch"
       >
@@ -38,7 +38,7 @@ const PasswordFormField = () => {
         lowercase letter, <br />
         one uppercase letter, one digit, one special character, and is at least
         eight characters long.
-      </Form.Message>
+      </Form.Message> */}
     </Form.Field>
   )
 }

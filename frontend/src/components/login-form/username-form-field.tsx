@@ -3,35 +3,28 @@ import { useFormContext } from 'react-hook-form'
 
 import { TextInput } from './styles'
 
-const EmailFormField = () => {
+const UsernameFormField = () => {
   const { register } = useFormContext()
   return (
     <Form.Field className="grid mb-[10px]" name="email">
       <div className="flex items-baseline justify-between">
         <Form.Label className="text-[15px] font-medium leading-[35px] text-white dark:text-black">
-          Email
+          Username:
         </Form.Label>
 
         <Form.Message
           className="text-[13px] text-white dark:text-black opacity-[0.8]"
           match="valueMissing"
         >
-          Please enter your email
-        </Form.Message>
-
-        <Form.Message
-          className="text-[13px] text-white dark:text-black opacity-[0.8]"
-          match="typeMismatch"
-        >
-          Please provide a valid email
+          Username is mandatory
         </Form.Message>
       </div>
 
       <Form.Control asChild>
-        <TextInput type="email" required {...register('email')} />
+        <TextInput type="text" required {...register('username')} />
       </Form.Control>
     </Form.Field>
   )
 }
 
-export default EmailFormField
+export default UsernameFormField
