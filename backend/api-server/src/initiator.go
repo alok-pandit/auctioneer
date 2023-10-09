@@ -20,8 +20,9 @@ func Initiate() {
 	e := echo.New()
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowMethods: []string{echo.GET, echo.HEAD, echo.PUT, echo.PATCH, echo.POST, echo.DELETE},
-		AllowOrigins: []string{"*"},
+		AllowMethods:     []string{echo.GET, echo.HEAD, echo.PUT, echo.PATCH, echo.POST, echo.DELETE},
+		AllowOrigins:     []string{"*"},
+		AllowCredentials: true,
 	}))
 
 	conn := db.Connect()

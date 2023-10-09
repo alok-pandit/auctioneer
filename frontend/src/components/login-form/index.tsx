@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as Form from '@radix-ui/react-form'
 import * as Separator from '@radix-ui/react-separator'
 import { FormProvider, useForm } from 'react-hook-form'
+import { useQueryClient } from 'react-query'
 import * as z from 'zod'
 
 import Button from '../ui-primitives/button'
@@ -12,6 +13,7 @@ import ToggleSwitch from '../ui-primitives/toggle-switch'
 import PasswordFormField from './password-form-field'
 import UsernameFormField from './username-form-field'
 
+import { login } from '@/apis/login'
 import useDarkMode from '@/hooks/dark-mode'
 import { clmx } from '@/utils'
 
@@ -19,20 +21,26 @@ const formSchema = z.object({
   username: z.string().min(4),
   password: z.string().min(4)
 })
-
+const defaultValues = {
+  username: '',
+  password: ''
+}
 const LoginForm = () => {
   const methods = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      username: '',
-      password: ''
-    }
+    defaultValues
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // eslint-disable-next-line
-    console.log(values)
-    methods.reset()
+  const queryClient = useQueryClient()
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const result = await queryClient.fetchQuery({
+      queryKey: 'login',
+      queryFn: () => login(values)
+    })
+    if (result) {
+      methods.reset()
+    }
   }
 
   const { isDark, setIsDark } = useDarkMode()

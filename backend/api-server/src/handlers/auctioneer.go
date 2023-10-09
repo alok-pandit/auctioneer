@@ -164,7 +164,8 @@ func Login(c echo.Context) error {
 			tokenCookie.Name = "access-token"
 			tokenCookie.Value = t
 			tokenCookie.HttpOnly = true
-			tokenCookie.Expires = time.Now().Add(time.Minute * 1)
+			tokenCookie.Expires = time.Now().Add(time.Minute * 15)
+			tokenCookie.Path = "/"
 			c.SetCookie(tokenCookie)
 
 			refreshTokenCookie := new(http.Cookie)
@@ -172,6 +173,7 @@ func Login(c echo.Context) error {
 			refreshTokenCookie.Value = rt
 			refreshTokenCookie.HttpOnly = true
 			refreshTokenCookie.Expires = time.Now().Add(time.Hour * 24 * 365)
+			refreshTokenCookie.Path = "/"
 			c.SetCookie(refreshTokenCookie)
 
 			resp.Success = true
