@@ -77,30 +77,7 @@ const SignUpForm = () => {
             <motion.span variants={item}>
               <PasswordFormField />
             </motion.span>
-            <motion.span variants={item}>
-              <PasswordFormField />
-            </motion.span>
-            <motion.span variants={item}>
-              <PasswordFormField />
-            </motion.span>
-            <motion.span variants={item}>
-              <PasswordFormField />
-            </motion.span>
-            <motion.span variants={item}>
-              <PasswordFormField />
-            </motion.span>
-            <motion.span variants={item}>
-              <PasswordFormField />
-            </motion.span>
-            <motion.span variants={item}>
-              <PasswordFormField />
-            </motion.span>{' '}
-            <motion.span variants={item}>
-              <PasswordFormField />
-            </motion.span>
-            <motion.span variants={item}>
-              <PasswordFormField />
-            </motion.span>
+         
           </motion.div>
         </Form.Root>
       </FormProvider>
