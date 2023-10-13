@@ -5,8 +5,8 @@ import useDarkMode from '@/hooks/dark-mode'
 import { clmx } from '@/utils'
 
 export const textGradient = clmx(
-  'bg-gradient-to-r from-white to-gray-200',
-  'dark:to-gray-600 bg-clip-text text-transparent'
+  'bg-gradient-to-r from-black dark:from-gray-300 to-gray-500',
+  'dark:to-gray-400 bg-clip-text text-transparent'
 )
 
 export const FunkyBackground = (props: { children: ReactNode }) => {

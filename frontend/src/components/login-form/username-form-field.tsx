@@ -13,7 +13,7 @@ const UsernameFormField = () => {
       <div className="flex items-baseline justify-between">
         <Form.Label
           className={clmx(
-            'text-[15px] font-medium leading-[35px] text-white',
+            'text-[15px] font-medium leading-[35px]',
             `${textGradient}`
           )}
         >
@@ -21,7 +21,10 @@ const UsernameFormField = () => {
         </Form.Label>
 
         <Form.Message
-          className="text-[13px] text-white dark:text-black opacity-[0.8]"
+          className={clmx(
+            'text-[15px] font-medium leading-[35px]',
+            `${textGradient}`
+          )}
           match="valueMissing"
         >
           Username is mandatory
