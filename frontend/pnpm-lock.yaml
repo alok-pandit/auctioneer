@@ -6,7 +6,7 @@ settings:
 
 dependencies:
   '@hookform/resolvers':
-    specifier: ^3.3.1
+    specifier: 3.3.1
     version: 3.3.1(react-hook-form@7.47.0)
   '@radix-ui/react-dialog':
     specifier: 1.0.5
@@ -27,16 +27,16 @@ dependencies:
     specifier: 1.5.1
     version: 1.5.1
   framer-motion:
-    specifier: ^10.16.4
+    specifier: 10.16.4
     version: 10.16.4(react-dom@18.2.0)(react@18.2.0)
   immer:
-    specifier: ^10.0.3
+    specifier: 10.0.3
     version: 10.0.3
   jotai:
-    specifier: ^2.4.3
+    specifier: 2.4.3
     version: 2.4.3(@types/react@18.2.25)(react@18.2.0)
   jotai-immer:
-    specifier: ^0.2.0
+    specifier: 0.2.0
     version: 0.2.0(immer@10.0.3)(jotai@2.4.3)(react@18.2.0)
   next:
     specifier: 13.5.4
@@ -54,7 +54,7 @@ dependencies:
     specifier: 3.39.3
     version: 3.39.3(react-dom@18.2.0)(react@18.2.0)
   zod:
-    specifier: ^3.22.4
+    specifier: 3.22.4
     version: 3.22.4
 
 devDependencies:
