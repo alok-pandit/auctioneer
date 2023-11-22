@@ -14,7 +14,7 @@ const ProductsContainer = () => {
 
   return (
     <div>
-      <Suspense>
+      <Suspense fallback={<h1>Loading...</h1>}>
         {prods &&
           prods.length &&
           prods.map((p: ProductCatalogue, i: number) => {
