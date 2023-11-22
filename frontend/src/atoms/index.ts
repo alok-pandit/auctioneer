@@ -1,5 +1,5 @@
 import { atom } from 'jotai'
-
+import { atomWithImmer } from 'jotai-immer'
 export const darkAtomBase = atom(false)
 
 export const darkAtom = atom(
@@ -14,3 +14,19 @@ export const darkAtom = atom(
     localStorage.setItem('theme', isDark ? 'dark' : 'light')
   }
 )
+
+export interface ProductCatalogue {
+  batchId: string
+  category: string
+  description?: string
+  discount?: number
+  images: string[]
+  price: number
+  productName: string
+  quantity: number
+  sellerId: string
+  unitPrice: number
+  updatedAt?: string
+}
+
+export const fpAtom = atomWithImmer<ProductCatalogue[]>([])

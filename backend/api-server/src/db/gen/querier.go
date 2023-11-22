@@ -14,6 +14,7 @@ type Querier interface {
 	CreateAuctioneer(ctx context.Context, arg CreateAuctioneerParams) error
 	DeleteAuctioneer(ctx context.Context, id string) error
 	GetAllAuctioneers(ctx context.Context) ([]Auctioneer, error)
+	GetAllProducts(ctx context.Context) ([]ProductCatalogue, error)
 	// auctioneer.sql
 	GetAuctioneer(ctx context.Context, username string) (GetAuctioneerRow, error)
 	GetRefreshTokenByID(ctx context.Context, id string) (pgtype.Text, error)

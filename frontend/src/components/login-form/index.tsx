@@ -3,9 +3,9 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as Form from '@radix-ui/react-form'
 import * as Separator from '@radix-ui/react-separator'
+import { useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { FormProvider, useForm } from 'react-hook-form'
-import { useQueryClient } from 'react-query'
 import * as z from 'zod'
 
 import SignUpForm from '../signup-form'
@@ -25,10 +25,12 @@ const formSchema = z.object({
   username: z.string().min(4),
   password: z.string().min(4)
 })
+
 const defaultValues = {
   username: '',
   password: ''
 }
+
 const LoginForm = () => {
   const methods = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -41,10 +43,10 @@ const LoginForm = () => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const result = await queryClient.fetchQuery({
-      queryKey: 'login',
+      queryKey: ['login'],
       queryFn: () => login(values)
     })
-    if (result) {
+    if (result && result.Success) {
       methods.reset()
       router.replace('/dashboard')
     }

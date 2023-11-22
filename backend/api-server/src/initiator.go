@@ -64,6 +64,8 @@ func Initiate() {
 
 	secure.GET("/auctioneers", handlers.GetAllAuctioneers)
 
+	api.GET("/product-catalogue", handlers.GetAllProducts)
+
 	e.Logger.Fatal(e.Start(":" + os.Getenv("API_SERVER_PORT")))
 
 }

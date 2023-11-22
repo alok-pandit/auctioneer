@@ -17,3 +17,17 @@ type Auctioneer struct {
 	Role               pgtype.Int2 `db:"role" json:"role"`
 	RefreshToken       pgtype.Text `db:"refresh_token" json:"refreshToken"`
 }
+
+type ProductCatalogue struct {
+	ProductName string           `db:"product_name" json:"productName"`
+	Quantity    int32            `db:"quantity" json:"quantity"`
+	Price       float64          `db:"price" json:"price"`
+	SellerID    string           `db:"seller_id" json:"sellerId"`
+	Category    string           `db:"category" json:"category"`
+	UnitPrice   float64          `db:"unit_price" json:"unitPrice"`
+	Discount    pgtype.Float8    `db:"discount" json:"discount"`
+	Description pgtype.Text      `db:"description" json:"description"`
+	UpdatedAt   pgtype.Timestamp `db:"updatedAt" json:"updatedAt"`
+	BatchID     string           `db:"batch_id" json:"batchId"`
+	Images      []string         `db:"images" json:"images"`
+}

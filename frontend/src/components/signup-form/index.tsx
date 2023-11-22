@@ -1,10 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as Form from '@radix-ui/react-form'
 import * as Separator from '@radix-ui/react-separator'
+import { useQueryClient } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/navigation'
 import { FormProvider, useForm } from 'react-hook-form'
-import { useQueryClient } from 'react-query'
 import * as z from 'zod'
 
 import PasswordFormField from '../login-form/password-form-field'
@@ -49,7 +49,7 @@ const SignUpForm = () => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const result = await _queryClient.fetchQuery({
-      queryKey: 'login',
+      queryKey: ['login'],
       queryFn: () => login(values)
     })
     if (result) {
@@ -77,7 +77,6 @@ const SignUpForm = () => {
             <motion.span variants={item}>
               <PasswordFormField />
             </motion.span>
-         
           </motion.div>
         </Form.Root>
       </FormProvider>
